@@ -22,3 +22,8 @@ Users appreciate release notes as you update your extension.
 ### 1.0.0
 
 Initial release of Time-Counter
+
+### 1.1.1
+
+The directory holding the time-counter.json file now creates properly if it does not exist
+Changed the project logo

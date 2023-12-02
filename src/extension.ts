@@ -79,6 +79,7 @@ export async function activate(context: vscode.ExtensionContext) {
   try {
     await fs.readFile(storagePath);
   } catch {
+    await fs.mkdir(context.globalStorageUri.path.replace('/', ''));
     await fs.writeFile(storagePath, "{}");
   }
   console.log("Time-meter running.");
@@ -178,7 +179,8 @@ export async function activate(context: vscode.ExtensionContext) {
       })
     );
     await fs.writeFile(storagePath, JSON.stringify(data));
-  }, 60_000);
+    console.log('writing');
+  }, 5_000);
 
   const command = vscode.commands.registerCommand(
     "time-counter.showStats",
@@ -192,7 +194,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jsonData = await fs
         .readFile(storagePath)
         .then((str) => JSON.parse(str.toString()));
-
+      
       panel.webview.html = getHtml(
         jsonData,
         vscode.workspace.name || "undefined"
