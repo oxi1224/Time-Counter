@@ -2,3 +2,4 @@ node_modules
 out
 .yarnrc
 yarn.lock
+time-counter-*.vsix
