@@ -180,7 +180,7 @@ export async function activate(context: vscode.ExtensionContext) {
     );
     await fs.writeFile(storagePath, JSON.stringify(data));
     console.log('writing');
-  }, 5_000);
+  }, 30_000);
 
   const command = vscode.commands.registerCommand(
     "time-counter.showStats",
