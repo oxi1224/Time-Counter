@@ -79,7 +79,9 @@ export async function activate(context: vscode.ExtensionContext) {
   try {
     await fs.readFile(storagePath);
   } catch {
-    await fs.mkdir(context.globalStorageUri.path.replace('/', ''));
+    try {
+      await fs.mkdir(context.globalStorageUri.path.replace("/", ""));
+    } catch {}
     await fs.writeFile(storagePath, "{}");
   }
   console.log("Time-meter running.");
@@ -96,6 +98,7 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   vscode.workspace.onDidOpenTextDocument((event) => {
+    if (event.uri.path.endsWith('.git')) return;
     const isSameProject = event.uri.path
       .split("/")
       .includes(vscode.workspace.name || "");
@@ -114,12 +117,25 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   vscode.workspace.onDidCloseTextDocument((event) => {
+    if (event.uri.path.endsWith('.git')) return;
     const fileData = fileMap.get(event.uri.path)!;
     fileData.stopInterval();
   });
 
   vscode.workspace.onDidChangeTextDocument((event) => {
     const document = event.document;
+    if (document.uri.path.endsWith('.git')) return;
+    const isSameProject = document.uri.path
+      .split("/")
+      .includes(vscode.workspace.name || "");
+    if (!fileMap.has(document.uri.path)) {
+      fileMap.set(
+        document.uri.path,
+        generateFileData({
+          project: isSameProject ? vscode.workspace.name : undefined,
+        })
+      );
+    }
     const fileData = fileMap.get(document.uri.path)!;
     fileData.updateLastUpdated();
 
@@ -137,6 +153,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidRenameFiles((event) => {
     for (const file of event.files) {
+      if (file.oldUri.path.endsWith('.git')) continue;
       if (!fileMap.has(file.oldUri.path)) continue;
       const fileData = fileMap.get(file.oldUri.path)!;
       fileMap.delete(file.oldUri.path);
@@ -147,6 +164,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const activeEditor = vscode.window.activeTextEditor;
   if (activeEditor) {
     const document = activeEditor.document;
+    if (document.uri.path.endsWith('.git')) return;
     const isSameProject = document.uri.path
       .split("/")
       .includes(vscode.workspace.name || "");
@@ -175,11 +193,12 @@ export async function activate(context: vscode.ExtensionContext) {
           intervalRunning,
           ..._data
         } = v;
+        const split = k.split("/");
         return [k, _data];
       })
     );
     await fs.writeFile(storagePath, JSON.stringify(data));
-    console.log('writing');
+    console.log("writing");
   }, 30_000);
 
   const command = vscode.commands.registerCommand(
@@ -194,7 +213,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jsonData = await fs
         .readFile(storagePath)
         .then((str) => JSON.parse(str.toString()));
-      
+
       panel.webview.html = getHtml(
         jsonData,
         vscode.workspace.name || "undefined"

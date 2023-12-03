@@ -11,6 +11,7 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
   return `
   <!DOCTYPE html>
   <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://cdnjs.cloudflare.com;">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
@@ -79,12 +80,13 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
           const data = ${JSON.stringify(data)};
 
           function groupByProject(data) {
-            const grouped = {
-              undefined: {},
-            };
+            const grouped = {};
             Object.entries(data).forEach(([k, v]) => {
               const { project, ...data } = v;
               if (!project) {
+                if (!grouped.undefined) {
+                  grouped.undefined = {};
+                }
                 grouped.undefined[k.replace("/", "")] = data;
               } else {
                 if (!grouped[project]) {
@@ -94,17 +96,15 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
               }
             });
 
-            const structured = {
-              undefined: {},
-            };
+            const structured = {};
             Object.entries(grouped).forEach(([project, files]) => {
               if (Object.keys(files).length === 0) return;
               if (!structured[project]) {
                 structured[project] = {};
+                structured[project].totalSeconds = 0;
+                structured[project].totalMinutes = 0;
+                structured[project].totalHours = 0;
               }
-              /**
-               * @type {Object<string, StatData>>}
-               */
               const projectData = files;
               const splitPath = Object.keys(projectData)[0].split("/");
               const projectPathIndex = splitPath.findIndex(
@@ -146,6 +146,12 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
                 fileData.totalSeconds = fileData.sessionTime
                 fileData.totalMinutes = minutes;
                 fileData.totalHours = hours;
+                structured[project].totalSeconds += fileData.totalSeconds;
+                structured[project].totalMinutes += fileData.totalMinutes;
+                structured[project].totalHours += fileData.totalHours;
+                structured[project].totalSeconds = round(structured[project].totalSeconds);
+                structured[project].totalMinutes = round(structured[project].totalMinutes);
+                structured[project].totalHours = round(structured[project].totalHours);
                 delete fileData.sessionTime;
                 setNestedPropertyValue(
                   structured,
