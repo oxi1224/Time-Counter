@@ -15,9 +15,15 @@ The extensions comes with the following features:
 
 - Active internet connection
 
-## Release Notes
+## Usage
 
-Users appreciate release notes as you update your extension.
+- Press the following key combination:
+Windows: ``control`` + ``shift`` + ``p``
+MacOS: ``Command`` + ``shift`` + ``p``
+- Type ``Time-Counter: Show Time Stats``
+- A new window should open with your usage statistics
+
+## Release Notes
 
 ### 1.0.0
 
@@ -27,3 +33,7 @@ Initial release of Time-Counter
 
 The directory holding the time-counter.json file now creates properly if it does not exist
 Changed the project logo
+
+### 1.2.2
+
+Now proplerly dislpay the time data
