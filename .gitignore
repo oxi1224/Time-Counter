@@ -3,3 +3,4 @@ out
 .yarnrc
 yarn.lock
 time-counter-*.vsix
+.vscode-test

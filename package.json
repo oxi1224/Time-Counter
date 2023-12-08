@@ -2,13 +2,13 @@
   "name": "time-counter",
   "displayName": "Time Counter - by oxi",
   "description": "A simple extension which shows you how long you've been working on a project/file",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "repository": "https://github.com/oxi1224/Time-Counter.git",
   "publisher": "Oxi1224-Time-Counter",
   "license": "CC-BY-NC-4.0",
   "icon": "images/icon.png",
   "engines": {
-    "vscode": "^1.84.0"
+    "vscode": "^1.64.0"
   },
   "categories": [
     "Other"
@@ -34,15 +34,15 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.84.0",
     "@types/mocha": "^10.0.3",
     "@types/node": "18.x",
+    "@types/vscode": "1.64.0",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
+    "@vscode/test-electron": "^2.3.6",
     "eslint": "^8.52.0",
     "glob": "^10.3.10",
     "mocha": "^10.2.0",
-    "typescript": "^5.2.2",
-    "@vscode/test-electron": "^2.3.6"
+    "typescript": "^5.2.2"
   }
 }

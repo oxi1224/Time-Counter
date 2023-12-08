@@ -7,7 +7,11 @@ interface FileStats {
   lineCount: number;
 }
 
-export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
+export function getHtml(
+  data: { [key: string]: FileStats },
+  sessionData: { [key: string]: FileStats },
+  curProj: string
+) {
   return `
   <!DOCTYPE html>
   <head>
@@ -25,6 +29,9 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
         </div>
         <div>
           <button id="show-all">Show all</button>
+        </div>
+        <div>
+          <button id="show-session">Show session</button>
         </div>
       </div>
   
@@ -78,6 +85,7 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
       }
       (async () => {
           const data = ${JSON.stringify(data)};
+          const sessionData = ${JSON.stringify(sessionData)};
 
           function groupByProject(data) {
             const grouped = {};
@@ -165,9 +173,10 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
             return structured;
           }
           const structuredData = groupByProject(data);
-
+          const structuredSessionData = groupByProject(sessionData);
           const allButton = document.getElementById("show-all");
           const projectButton = document.getElementById("show-project");
+          const sessionButton = document.getElementById("show-session");
 
           allButton.addEventListener("click", () =>
             showAllProjects(structuredData)
@@ -175,8 +184,10 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
           projectButton.addEventListener("click", () =>
             showCurProject(structuredData)
           );
-
-          showCurProject(structuredData);
+          sessionButton.addEventListener("click", () =>
+            showCurSession(structuredSessionData)
+          );
+          showCurSession(structuredSessionData);
         }
       )();
 
@@ -192,6 +203,21 @@ export function getHtml(data: {[key: string]: FileStats}, curProj: string) {
         codeElm.textContent += JSON.stringify(projData, null, 2);
         preElm.appendChild(codeElm);
         document.body.appendChild(preElm);
+        hljs.highlightAll();
+      }
+
+      function showCurSession(data) {
+        [...document.querySelectorAll(".code-pre")].forEach((n) => n.remove());
+        Object.entries(data).forEach(([project, fileData]) => {
+          const preElm = document.createElement("pre");
+          preElm.classList.add("code-pre");
+          const codeElm = document.createElement("code");
+          codeElm.classList.add("code-elm");
+          codeElm.textContent = \`const projectName = "CURRENT SESSION - \${project.toLocaleUpperCase()}";\n\`;
+          codeElm.textContent += JSON.stringify(fileData, null, 2);
+          preElm.appendChild(codeElm);
+          document.body.appendChild(preElm);
+        });
         hljs.highlightAll();
       }
 
