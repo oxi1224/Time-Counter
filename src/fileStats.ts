@@ -46,8 +46,12 @@ export class FileStats {
         .split("/")
         .includes(vscode.workspace.name || "");
 
-      this.addIfNotExists(document.uri.path, isSameProject);
-      this.startInterval(document.uri.path);
+      const splitPath = document.uri.path.split('/');
+      splitPath[1] = splitPath[1].toLowerCase();
+      const path = splitPath.join('/');
+
+      this.addIfNotExists(path, isSameProject);
+      this.startInterval(path);
     }
   }
 
@@ -124,6 +128,6 @@ export class FileStats {
       })
     );
     await fs.writeFile(this.jsonStoragePath, JSON.stringify(data));
-    console.log("writing");
+    console.log("[Time-Counter]: saving data.");
   }
 }

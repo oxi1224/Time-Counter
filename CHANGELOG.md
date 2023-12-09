@@ -19,3 +19,14 @@ All notable changes to the "time-counter" extension will be documented in this f
 
 ### Fixed
 - Now proplerly dislpay the time data
+
+## [2.0.0] - 2023.12.09
+
+### Fixed
+- Files from different projects now properly display when showing data
+
+### Added
+- The ability to view stats for current session
+
+### Changed
+- New look to stats

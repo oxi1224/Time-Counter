@@ -37,3 +37,8 @@ Changed the project logo
 ### 1.2.2
 
 Now proplerly dislpay the time data
+
+## 2.0.0
+- Files from different projects now properly display when showing data
+- Added the ability to view stats for current session
+- New look to stats

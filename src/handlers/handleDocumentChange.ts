@@ -8,8 +8,12 @@ export function handleDocumentChange(event: TextDocumentChangeEvent, fileStats: 
     .split("/")
     .includes(workspace.name || "");
 
-  fileStats.addIfNotExists(document.uri.path, isSameProject);
+  const splitPath = document.uri.path.split('/');
+  splitPath[1] = splitPath[1].toLowerCase();
+  const path = splitPath.join('/');
 
+  fileStats.addIfNotExists(path, isSameProject);
+  
   const updateData = {
     newLineCount: document.lineCount,
     keystrokeCount: 0
@@ -18,5 +22,5 @@ export function handleDocumentChange(event: TextDocumentChangeEvent, fileStats: 
     updateData.keystrokeCount += Math.min(1, change.text.length);
   }
 
-  fileStats.updateStats(document.uri.path, updateData);
+  fileStats.updateStats(path, updateData);
 }

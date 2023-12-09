@@ -8,7 +8,11 @@ export function handleDocumentOpen(document: TextDocument, fileStats: FileStats)
     .split("/")
     .includes(workspace.name || "");
 
-  fileStats.addIfNotExists(document.uri.path, isSameProject);
-  fileStats.startInterval(document.uri.path);
-  fileStats.updateLastOpened(document.uri.path);
+  const splitPath = document.uri.path.split('/');
+  splitPath[1] = splitPath[1].toLowerCase();
+  const path = splitPath.join('/');
+
+  fileStats.addIfNotExists(path, isSameProject);
+  fileStats.startInterval(path);
+  fileStats.updateLastOpened(path);
 }

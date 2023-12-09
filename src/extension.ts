@@ -59,7 +59,7 @@ export async function activate(context: vscode.ExtensionContext) {
           return [k, _data];
         })
       );
-      console.log(sessionJsonData);
+
       panel.webview.html = getHtml(
         jsonData,
         sessionJsonData,
