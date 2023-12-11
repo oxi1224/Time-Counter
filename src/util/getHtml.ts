@@ -310,6 +310,11 @@ export function getHtml(
         const projNameSpan = document.createElement("span");
         projNameSpan.innerHTML = \`<span class="key">projectName</span> = <span class="value">\${CUR_PROJECT.toLocaleUpperCase()}</span>\`;
         wrapperElm.appendChild(projNameSpan);
+        wrapperElm.innerHTML += \`
+          </br><span class="key">totalSeconds</span>: <span class="value">\${data.totalSeconds}</span></br>
+          <span class="key">totalMinutes</span>: <span class="value">\${data.totalMinutes}</span></br>
+          <span class="key">totalHours</span>: <span class="value">\${data.totalHours}</span></br>
+        \`;
         wrapperElm.appendChild(treeify(projData));
         document.body.appendChild(wrapperElm);
       }
@@ -324,6 +329,11 @@ export function getHtml(
           const projNameSpan = document.createElement("span");
           projNameSpan.innerHTML = \`<span class="key">projectName</span> = <span class="value">CURRENT SESSION - \${project.toLocaleUpperCase()}</span>\`;
           wrapperElm.appendChild(projNameSpan);
+          wrapperElm.innerHTML += \`
+            </br><span class="key">totalSeconds</span>: <span class="value">\${fileData.totalSeconds}</span></br>
+            <span class="key">totalMinutes</span>: <span class="value">\${fileData.totalMinutes}</span></br>
+            <span class="key">totalHours</span>: <span class="value">\${fileData.totalHours}</span></br>
+          \`;
           wrapperElm.appendChild(treeify(fileData));
           document.body.appendChild(wrapperElm);
         });
@@ -339,6 +349,11 @@ export function getHtml(
           const projNameSpan = document.createElement("span");
           projNameSpan.innerHTML = \`<span class="key">projectName</span> = <span class="value">\${project.toLocaleUpperCase()}</span>\`;
           wrapperElm.appendChild(projNameSpan);
+          wrapperElm.innerHTML += \`
+            <br><span class="key">totalSeconds</span>: <span class="value">\${fileData.totalSeconds}</span></br>
+            <span class="key">totalMinutes</span>: <span class="value">\${fileData.totalMinutes}</span></br>
+            <span class="key">totalHours</span>: <span class="value">\${fileData.totalHours}</span></br>
+          \`;
           wrapperElm.appendChild(treeify(fileData));
           document.body.appendChild(wrapperElm);
         });
