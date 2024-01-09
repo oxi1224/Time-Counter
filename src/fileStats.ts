@@ -47,17 +47,17 @@ export class FileStats {
         .includes(vscode.workspace.name || "");
 
       const splitPath = document.uri.path.split('/');
-      splitPath[1] = splitPath[1].toLowerCase();
+      splitPath[1] = splitPath[1]?.toLowerCase();
       const path = splitPath.join('/');
 
-      this.addIfNotExists(path, isSameProject);
-      this.startInterval(path);
+      this.addIfNotExists(path, isSameProject, document.lineCount);
     }
   }
 
-  addIfNotExists(key: string, isSameProject: boolean) {
+  addIfNotExists(key: string, isSameProject: boolean, lineCount: number) {
     const generatedData = generateFileData({
       project: isSameProject ? vscode.workspace.name : undefined,
+      lineCount: lineCount
     });
 
     if (!this.fileMap.has(key)) {
@@ -114,7 +114,7 @@ export class FileStats {
   async saveToDisk() {
     const fileDataObject = Object.fromEntries(this.fileMap);
     const data = Object.fromEntries(
-      Object.entries(fileDataObject).map(([k, v]) => {
+      Object.entries(fileDataObject).filter(([_, v]) => v.sessionTime !== 0).map(([k, v]) => {
         const {
           startInterval,
           stopInterval,

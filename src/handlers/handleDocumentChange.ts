@@ -9,10 +9,10 @@ export function handleDocumentChange(event: TextDocumentChangeEvent, fileStats: 
     .includes(workspace.name || "");
 
   const splitPath = document.uri.path.split('/');
-  splitPath[1] = splitPath[1].toLowerCase();
+  splitPath[1] = splitPath[1]?.toLowerCase();
   const path = splitPath.join('/');
 
-  fileStats.addIfNotExists(path, isSameProject);
+  fileStats.addIfNotExists(path, isSameProject, document.lineCount);
   
   const updateData = {
     newLineCount: document.lineCount,

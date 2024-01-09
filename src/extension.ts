@@ -31,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   setInterval(async () => {
     await fileStats.saveToDisk();
-  }, 30_000);
+  }, 20_000);
 
   const command = vscode.commands.registerCommand(
     "time-counter.showStats",

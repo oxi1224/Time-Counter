@@ -13,7 +13,7 @@ export function handleDocumentRename(event: FileRenameEvent, fileStats: FileStat
     splitNewPath[1] = splitNewPath[1].toLowerCase();
     const newPath = splitNewPath.join('/');
 
-    fileStats.addIfNotExists(oldPath, true);
+    fileStats.addIfNotExists(oldPath, true, 0);
     fileStats.updateFileName(oldPath, newPath);
   }
 }
