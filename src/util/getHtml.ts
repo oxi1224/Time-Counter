@@ -248,7 +248,7 @@ export function getHtml(
           showAllProjects(structuredData)
         );
         projectButton.addEventListener("click", () =>
-          showCurProject(structuredData)
+          showCurProject(structuredData[CUR_PROJECT])
         );
         sessionButton.addEventListener("click", () =>
           showCurSession(structuredSessionData)
@@ -303,8 +303,6 @@ export function getHtml(
         [...document.querySelectorAll(".field-wrapper")].forEach((n) =>
           n.remove()
         );
-
-        const projData = data[CUR_PROJECT];
         const wrapperElm = document.createElement("div");
         wrapperElm.classList.add("field-wrapper");
         const projNameSpan = document.createElement("span");
@@ -315,7 +313,7 @@ export function getHtml(
           <span class="key">totalMinutes</span>: <span class="value">\${data.totalMinutes}</span></br>
           <span class="key">totalHours</span>: <span class="value">\${data.totalHours}</span></br>
         \`;
-        wrapperElm.appendChild(treeify(projData));
+        wrapperElm.appendChild(treeify(data));
         document.body.appendChild(wrapperElm);
       }
 
@@ -335,6 +333,7 @@ export function getHtml(
             <span class="key">totalHours</span>: <span class="value">\${fileData.totalHours}</span></br>
           \`;
           wrapperElm.appendChild(treeify(fileData));
+          
           document.body.appendChild(wrapperElm);
         });
       }
