@@ -176,6 +176,10 @@ export function getHtml(
               structured[project].totalSeconds = 0;
               structured[project].totalMinutes = 0;
               structured[project].totalHours = 0;
+              structured[project].addedLines = 0;
+              structured[project].removedLines = 0;
+              structured[project].keystrokes = 0;
+              structured[project].lineCount = 0;
             }
             const projectData = files;
             const splitPath = Object.keys(projectData)[0].split("/");
@@ -226,6 +230,10 @@ export function getHtml(
               structured[project].totalHours = round(
                 structured[project].totalHours
               );
+              structured[project].addedLines += fileData.addedLines;
+              structured[project].removedLines += fileData.removedLines;
+              structured[project].keystrokes += fileData.keystrokes;
+              structured[project].lineCount += fileData.lineCount;
               delete fileData.sessionTime;
               setNestedPropertyValue(
                 structured,
@@ -312,6 +320,10 @@ export function getHtml(
           </br><span class="key">totalSeconds</span>: <span class="value">\${data.totalSeconds}</span></br>
           <span class="key">totalMinutes</span>: <span class="value">\${data.totalMinutes}</span></br>
           <span class="key">totalHours</span>: <span class="value">\${data.totalHours}</span></br>
+          <span class="key">addedLines</span>: <span class="value">\${data.addedLines}</span></br>
+          <span class="key">removedLines</span>: <span class="value">\${data.removedLines}</span></br>
+          <span class="key">keystrokes</span>: <span class="value">\${data.keystrokes}</span></br>
+          <span class="key">lineCount</span>: <span class="value">\${data.lineCount}</span></br>
         \`;
         wrapperElm.appendChild(treeify(data));
         document.body.appendChild(wrapperElm);
