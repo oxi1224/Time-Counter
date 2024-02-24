@@ -128,6 +128,7 @@ export class FileStats {
       })
     );
     await fs.writeFile(this.jsonStoragePath, JSON.stringify(data));
+    await fs.writeFile(this.jsonStoragePath + ".back", JSON.stringify(data));
     console.log("[Time-Counter]: saving data.");
   }
 }
